@@ -3,7 +3,7 @@ using TaskItemManagementApp;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<TaskItemStore>();
+builder.Services.AddSingleton<TaskItemStore>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

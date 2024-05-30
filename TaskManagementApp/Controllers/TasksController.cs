@@ -18,35 +18,35 @@ public class TasksController : ControllerBase
     [HttpGet]
     public ActionResult<IEnumerable<TaskItem>> GetTasks()
     {
-        return _taskItemStore.GetAll();
+        return Ok(_taskItemStore.GetAll());
     }
 
     [HttpGet("{id}")]
-    public ActionResult<TaskItem> GetTask(int id)
+    public ActionResult<Response<TaskItem>> GetTask(int id)
     {
         var task = _taskItemStore.Get(id);
         if (task == null)
         {
-            return NotFound();
+            return NotFound("Please Enter Valid Id.");
         }
-        return task;
+        return Ok(task);
     }
 
     [HttpPost]
-    public ActionResult<Task> PostTask(TaskItem task)
+    public ActionResult<TaskItem> PostTask(AddTaskItem task)
     {
-        throw new NotImplementedException();
+        return Ok(_taskItemStore.Add(task));
     }
 
-    [HttpPut("{id}")]
-    public IActionResult PutTask(int id, TaskItem task)
+    [HttpPut]
+    public IActionResult PutTask(TaskItem task)
     {
-        if (id != task.Id)
+        if (task.Id == 0)
         {
             return BadRequest();
         }
 
-        var existingTask = _taskItemStore.Get(id);
+        var existingTask = _taskItemStore.Get(task.Id);
         if (existingTask == null)
         {
             return NotFound();
@@ -59,6 +59,7 @@ public class TasksController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult DeleteTask(int id)
     {
-      throw new NotImplementedException();
+        _taskItemStore.Delete(id);
+        return Ok("Task Delete Successfully.");
     }
 }
